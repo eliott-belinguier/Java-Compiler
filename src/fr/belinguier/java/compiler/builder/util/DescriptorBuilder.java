@@ -53,7 +53,7 @@ public class DescriptorBuilder {
     public static String getMethodDescriptor(String returnClassName, String... parameterClassName) {
         StringBuilder stringBuilder = new StringBuilder("(");
 
-        if (parameterClassName != null && parameterClassName.length > 1) {
+        if (parameterClassName != null && parameterClassName.length > 0) {
             for (String className : parameterClassName) {
                 if (className == null)
                     return null;
@@ -68,7 +68,7 @@ public class DescriptorBuilder {
     public static String getMethodDescriptor(Class<?> returnClass, Class<?>... parameterClass) {
         StringBuilder stringBuilder = new StringBuilder("(");
 
-        if (parameterClass != null && parameterClass.length > 1) {
+        if (parameterClass != null && parameterClass.length > 0) {
             for (Class<?> clazz : parameterClass) {
                 if (clazz == null)
                     return null;
