@@ -54,6 +54,8 @@ public class AttributeManager {
                     return false;
             }
         }
+        if (this.attributes.size() < 1)
+            return true;
         return attributes.addAll(this.attributes.values());
     }
     
