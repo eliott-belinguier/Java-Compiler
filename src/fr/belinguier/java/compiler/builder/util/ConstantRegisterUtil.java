@@ -32,7 +32,7 @@ public final class ConstantRegisterUtil {
         return registerConstant(constantManager, constantClass);
     }
 
-    public static short registerNameAndTypeConstant(ConstantManager constantManager, String name, String descriptor) {
+    private static short registerNameAndTypeConstantFromDescriptor(ConstantManager constantManager, String name, String descriptor) {
         ConstantNameAndType constantNameAndType;
 
         if (constantManager == null || name == null || descriptor == null)
@@ -43,7 +43,15 @@ public final class ConstantRegisterUtil {
         return registerConstant(constantManager, constantNameAndType);
     }
 
-    public static short registerFieldRefConstant(ConstantManager constantManager, String ownerClass, String name, String descriptor) {
+    public static short registerNameAndTypeConstant(ConstantManager constantManager, String name, String returnClassName, String... parameterClassName) {
+        return registerNameAndTypeConstantFromDescriptor(constantManager, name, DescriptorBuilder.getMethodDescriptor(returnClassName, parameterClassName));
+    }
+
+    public static short registerNameAndTypeConstant(ConstantManager constantManager, String name, Class<?> returnClass, Class<?>... parameterClass) {
+        return registerNameAndTypeConstantFromDescriptor(constantManager, name, DescriptorBuilder.getMethodDescriptor(returnClass, parameterClass));
+    }
+
+    private static short registerFieldRefConstantFromDescriptor(ConstantManager constantManager, String ownerClass, String name, String descriptor) {
         ConstantFieldRef constantFieldRef;
 
         if (constantManager == null || ownerClass == null || name == null || descriptor == null)
@@ -54,18 +62,30 @@ public final class ConstantRegisterUtil {
         return registerConstant(constantManager, constantFieldRef);
     }
 
-    public static short registerMethodRefConstant(ConstantManager constantManager, String ownerClass, String name, String descriptor) {
+    public static short registerFieldRefConstant(ConstantManager constantManager, String ownerClass, String name, String typeClassName) {
+        return registerFieldRefConstantFromDescriptor(constantManager, ownerClass, name, DescriptorBuilder.getTypeDescriptor(typeClassName));
+    }
+
+    public static short registerFieldRefConstant(ConstantManager constantManager, String ownerClass, String name, Class<?> typeClass) {
+        return registerFieldRefConstantFromDescriptor(constantManager, ownerClass, name, DescriptorBuilder.getTypeDescriptor(typeClass));
+    }
+
+    public static short registerMethodRefConstantFromDescriptor(ConstantManager constantManager, String ownerClass, String name, String returnClassName, String... parameterClassName) {
         ConstantMethodRef constantMethodRef;
 
-        if (constantManager == null || ownerClass == null || name == null || descriptor == null)
+        if (constantManager == null || ownerClass == null || name == null)
             return 0;
         constantMethodRef = new ConstantMethodRef();
         constantMethodRef.classIndex = registerClassConstant(constantManager, ownerClass);
-        constantMethodRef.nameAndTypeIndex = registerNameAndTypeConstant(constantManager, name, descriptor);
+        constantMethodRef.nameAndTypeIndex = registerNameAndTypeConstant(constantManager, name, returnClassName, parameterClassName);
         return registerConstant(constantManager, constantMethodRef);
     }
 
-    public static short registerMethodTypeConstant(ConstantManager constantManager, String descriptor) {
+    public static short registerMethodRefConstantFromDescriptor(ConstantManager constantManager, String ownerClass, String name, Class<?> returnClass, Class<?>... parameterClass) {
+        return registerMethodRefConstantFromDescriptor(constantManager, ownerClass, name, DescriptorBuilder.getMethodDescriptor(returnClass, parameterClass));
+    }
+
+    private static short registerMethodTypeConstantFromDescriptor(ConstantManager constantManager, String descriptor) {
         ConstantMethodType constantMethodType;
 
         if (constantManager == null || descriptor == null)
@@ -73,6 +93,14 @@ public final class ConstantRegisterUtil {
         constantMethodType = new ConstantMethodType();
         constantMethodType.descriptorIndex = registerUtf8Constant(constantManager, descriptor);
         return registerConstant(constantManager, constantMethodType);
+    }
+
+    public static short registerMethodTypeConstantFromDescriptor(ConstantManager constantManager, String returnClassName, String... parameterClassName) {
+        return registerMethodTypeConstantFromDescriptor(constantManager, DescriptorBuilder.getMethodDescriptor(returnClassName, parameterClassName));
+    }
+
+    public static short registerMethodTypeConstantFromDescriptor(ConstantManager constantManager, Class<?> returnClass, Class<?>... parameterClass) {
+        return registerMethodTypeConstantFromDescriptor(constantManager, DescriptorBuilder.getMethodDescriptor(returnClass, parameterClass));
     }
 
     public static short registerDoubleConstant(ConstantManager constantManager, double value) {
