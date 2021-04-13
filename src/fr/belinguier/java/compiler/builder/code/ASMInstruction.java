@@ -467,15 +467,247 @@ public enum ASMInstruction implements Instruction {
      *     All intervening frames from the method that threw the exception up to, but not including, the method that handles the exception are discarded.
      */
     ATHROW((byte) 0xbf),
+
+    /**
+     * Operation:
+     *     Load byte or boolean from array
+     * Format:
+     *     baload
+     * Forms:
+     *     baload = 51 (0x33)
+     * Operand Stack:
+     *     ..., arrayref, index →
+     *     ..., value
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type byte or of type boolean.
+     *     The index must be of type int. Both arrayref and index are popped from the operand stack.
+     *     The byte value in the component of the array at index is retrieved, sign-extended to an int value, and pushed onto the top of the operand stack.
+     * Run-time Exceptions:
+     *     If arrayref is null, baload throws a NullPointerException.
+     *
+     *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the baload instruction throws an ArrayIndexOutOfBoundsException.
+     * Notes:
+     *     The baload instruction is used to load values from both byte and boolean arrays.
+     *     In Oracle's Java Virtual Machine implementation, boolean arrays - that is, arrays of type T_BOOLEAN - are implemented as arrays of 8-bit values.
+     *     Other implementations may implement packed boolean arrays; the baload instruction of such implementations must be used to access those arrays.
+     */
     BALOAD((byte) 0x33),
+
+    /**
+     * Operator:
+     *     Store into byte or boolean array
+     * Format:
+     *     bastore
+     * Forms:
+     *     bastore = 84 (0x54)
+     * Operand Stack:
+     *     ..., arrayref, index, value →
+     *     ...
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type byte or of type boolean.
+     *     The index and the value must both be of type int. The arrayref, index, and value are popped from the operand stack.
+     *     The int value is truncated to a byte and stored as the component of the array indexed by index.
+     * Run-time Exceptions:
+     *     If arrayref is null, bastore throws a NullPointerException.
+     *
+     *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the bastore instruction throws an ArrayIndexOutOfBoundsException.
+     * Notes:
+     *     The bastore instruction is used to store values into both byte and boolean arrays.
+     *     In Oracle's Java Virtual Machine implementation, boolean arrays - that is, arrays of type T_BOOLEAN - are implemented as arrays of 8-bit values.
+     *     Other implementations may implement packed boolean arrays; in such implementations the bastore instruction must be able to store boolean values into packed boolean arrays as well as byte values into byte arrays.
+     */
     BASTORE((byte) 0x54),
+
+    /**
+     * Operator:
+     *     Push byte
+     * Format:
+     *     bipush
+     *     byte
+     * Forms:
+     *     bipush = 16 (0x10)
+     * Operand Stack:
+     *     ... →
+     *     ..., value
+     * Description:
+     *     The immediate byte is sign-extended to an int value. That value is pushed onto the operand stack.
+     */
     BIPUSH((byte) 0x10),
+
     BREAKPOINT((byte) 0xca),
+
+    /**
+     * Operator:
+     *     Load char from array
+     * Format:
+     *     caload
+     * Forms:
+     *     caload = 52 (0x34)
+     * Operand Stack:
+     *     ..., arrayref, index →
+     *     ..., value
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type char.
+     *     The index must be of type int. Both arrayref and index are popped from the operand stack.
+     *     The component of the array at index is retrieved and zero-extended to an int value. That value is pushed onto the operand stack.
+     * Run-time Exceptions:
+     *     If arrayref is null, caload throws a NullPointerException.
+     *
+     *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the caload instruction throws an ArrayIndexOutOfBoundsException.
+     */
     CALOAD((byte) 0x34),
+
+    /**
+     * Operator:
+     *     Store into char array
+     * Format:
+     *     castore
+     * Forms:
+     *     castore = 85 (0x55)
+     * Operand Stack:
+     *     ..., arrayref, index, value →
+     *     ...
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type char.
+     *     The index and the value must both be of type int. The arrayref, index, and value are popped from the operand stack.
+     *     The int value is truncated to a char and stored as the component of the array indexed by index.
+     * Run-time Exceptions:
+     *     If arrayref is null, castore throws a NullPointerException.
+     *
+     *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the castore instruction throws an ArrayIndexOutOfBoundsException.
+     */
     CASTORE((byte) 0x55),
+
+    /**
+     * Operator:
+     *     Check whether object is of given type
+     * Format:
+     *     checkcast
+     *     indexbyte1
+     *     indexbyte2
+     * Forms:
+     *     checkcast = 192 (0xc0)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ..., objectref
+     * Description:
+     *     The objectref must be of type reference.
+     *     The unsigned indexbyte1 and indexbyte2 are used to construct an index into the run-time constant pool of the current class, where the value of the index is (indexbyte1 << 8) | indexbyte2.
+     *     The run-time constant pool item at the index must be a symbolic reference to a class, array, or interface type.
+     *
+     *     If objectref is null, then the operand stack is unchanged.
+     *
+     *     Otherwise, the named class, array, or interface type is resolved.
+     *     If objectref can be cast to the resolved class, array, or interface type, the operand stack is unchanged; otherwise, the checkcast instruction throws a ClassCastException.
+     *
+     *     The following rules are used to determine whether an objectref that is not null can be cast to the resolved type:
+     *     if S is the class of the object referred to by objectref and T is the resolved class, array, or interface type,
+     *     checkcast determines whether objectref can be cast to type T as follows:
+     *
+     *         If S is an ordinary (nonarray) class, then:
+     *             If T is a class type, then S must be the same class as T, or S must be a subclass of T;
+     *             If T is an interface type, then S must implement interface T.
+     *         If S is an interface type, then:
+     *             If T is a class type, then T must be Object.
+     *             If T is an interface type, then T must be the same interface as S or a superinterface of S.
+     *         If S is a class representing the array type SC[], that is, an array of components of type SC, then:
+     *             If T is a class type, then T must be Object.
+     *             If T is an interface type, then T must be one of the interfaces implemented by arrays.
+     *             If T is an array type TC[], that is, an array of components of type TC, then one of the following must be true:
+     *                 TC and SC are the same primitive type.
+     *                 TC and SC are reference types, and type SC can be cast to TC by recursive application of these rules.
+     * Linking Exceptions:
+     *     During resolution of the symbolic reference to the class, array, or interface type, any of the exceptions can be thrown.
+     * Run-time Exception:
+     *     Otherwise, if objectref cannot be cast to the resolved class, array, or interface type, the checkcast instruction throws a ClassCastException.
+     * Notes:
+     *     The checkcast instruction is very similar to the instanceof instruction.
+     *     It differs in its treatment of null, its behavior when its test fails (checkcast throws an exception, instanceof pushes a result code), and its effect on the operand stack.
+     */
     CHECKCAST((byte) 0xc0),
+
+    /**
+     * Operator:
+     *     Convert double to float
+     * Format:
+     *     d2f
+     * Forms:
+     *     d2f = 144 (0x90)
+     * Operand Stack:
+     *      ..., value →
+     *      ..., result
+     * Descriptor:
+     *     The value on the top of the operand stack must be of type double.
+     *     It is popped from the operand stack and undergoes value set conversion resulting in value'.
+     *     Then value' is converted to a float result using IEEE 754 round to nearest mode. The result is pushed onto the operand stack.
+     *
+     *     Where an d2f instruction is FP-strict, the result of the conversion is always rounded to the nearest representable value in the float value set.
+     *
+     *     Where an d2f instruction is not FP-strict, the result of the conversion may be taken from the float-extended-exponent value set;
+     *     it is not necessarily rounded to the nearest representable value in the float value set.
+     *
+     *     A finite value' too small to be represented as a float is converted to a zero of the same sign;
+     *     a finite value' too large to be represented as a float is converted to an infinity of the same sign. A double NaN is converted to a float NaN.
+     * Notes:
+     *     The d2f instruction performs a narrowing primitive conversion.
+     *     It may lose information about the overall magnitude of value' and may also lose precision.
+     */
     D2F((byte) 0x90),
+
+    /**
+     * Operator:
+     *     Convert double to int
+     * Format:
+     *     d2i
+     * Forms:
+     *     d2i = 142 (0x8e)
+     * Operand Stack:
+     *     ..., value →
+     *     ..., result
+     * Description:
+     *     The value on the top of the operand stack must be of type double.
+     *     It is popped from the operand stack and undergoes value set conversion resulting in value'.
+     *     Then value' is converted to an int. The result is pushed onto the operand stack:
+     *
+     *         If the value' is NaN, the result of the conversion is an int 0.
+     *
+     *         Otherwise, if the value' is not an infinity, it is rounded to an integer value V, rounding towards zero using IEEE 754 round towards zero mode.
+     *         If this integer value V can be represented as an int, then the result is the int value V.
+     *
+     *         Otherwise, either the value' must be too small (a negative value of large magnitude or negative infinity),
+     *         and the result is the smallest representable value of type int, or the value' must be too large (a positive value of large magnitude or positive infinity),
+     *         and the result is the largest representable value of type int.
+     * Notes:
+     *     The d2i instruction performs a narrowing primitive conversion. It may lose information about the overall magnitude of value' and may also lose precision.
+     */
     D2I((byte) 0x8e),
+
+    /**
+     * Operator:
+     *     Convert double to long
+     * Format:
+     *     d2l
+     * Forms:
+     *     d2l = 143 (0x8f)
+     * Operand Stack:
+     *     ..., value →
+     *     ..., result
+     * Description:
+     *     The value on the top of the operand stack must be of type double.
+     *     It is popped from the operand stack and undergoes value set conversion resulting in value'.
+     *     Then value' is converted to a long. The result is pushed onto the operand stack:
+     *
+     *         If the value' is NaN, the result of the conversion is a long 0.
+     *
+     *         Otherwise, if the value' is not an infinity, it is rounded to an integer value V, rounding towards zero using IEEE 754 round towards zero mode.
+     *         If this integer value V can be represented as a long, then the result is the long value V.
+     *
+     *         Otherwise, either the value' must be too small (a negative value of large magnitude or negative infinity),
+     *         and the result is the smallest representable value of type long, or the value' must be too large (a positive value of large magnitude or positive infinity),
+     *         and the result is the largest representable value of type long.
+     * Notes:
+     *     The d2l instruction performs a narrowing primitive conversion. It may lose information about the overall magnitude of value' and may also lose precision.
+     */
     D2L((byte) 0x8f),
     DADD((byte) 0x63),
     DALOAD((byte) 0x31),
