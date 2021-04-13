@@ -7,22 +7,465 @@ import fr.belinguier.java.compiler.builder.LocalVariableManager;
  */
 public enum ASMInstruction implements Instruction {
 
+    /** mnemonic
+     * Operation:
+     *     Short description of the instruction
+     * Format:
+     *     mnemonic
+     *     operand1
+     *     operand2
+     *     ...
+     * Forms:
+     *     mnemonic = opcode
+     * Operand Stack:
+     *     ..., value1, value2 →
+     *     ..., value3
+     * Description:
+     *     A longer description detailing constraints on operand stack contents or constant pool entries, the operation performed, the type of the results, etc.
+     * Linking Exceptions:
+     *     If any linking exceptions may be thrown by the execution of this instruction, they are set off one to a line, in the order in which they must be thrown.
+     * Run-time Exceptions:
+     *     If any run-time exceptions can be thrown by the execution of an instruction, they are set off one to a line, in the order in which they must be thrown.
+     *
+     *     Other than the linking and run-time exceptions, if any, listed for an instruction, that instruction must not throw any run-time exceptions except for instances of VirtualMethodError or its subclasses.
+     * Notes:
+     *     Comments not strictly part of the specification of an instruction are set aside as notes at the end of the description.
+     *
+     *     Each cell in the instruction format diagram represents a single 8-bit byte. The instruction's mnemonic is its name.
+     *     Its opcode is its numeric representation and is given in both decimal and hexadecimal forms.
+     *     Only the numeric representation is actually present in the Java Virtual Machine code in a class file.
+     *
+     *     Keep in mind that there are "operands" generated at compile time and embedded within Java Virtual Machine instructions, as well as "operands" calculated at run time and supplied on the operand stack.
+     *     Although they are supplied from several different areas, all these operands represent the same thing: values to be operated upon by the Java Virtual Machine instruction being executed.
+     *     By implicitly taking many of its operands from its operand stack, rather than representing them explicitly in its compiled code as additional operand bytes, register numbers, etc., the Java Virtual Machine's code stays compact.
+     *
+     *     Some instructions are presented as members of a family of related instructions sharing a single description, format, and operand stack diagram.
+     *     As such, a family of instructions includes several opcodes and opcode mnemonics; only the family mnemonic appears in the instruction format diagram, and a separate forms line lists all member mnemonics and opcodes.
+     *     For example, the Forms line for the lconst_<l> family of instructions, giving mnemonic and opcode information for the two instructions in that family (lconst_0 and lconst_1), is
+     *         lconst_0 = 9 (0x9)
+     *         lconst_1 = 10 (0xa)
+     *     In the description of the Java Virtual Machine instructions, the effect of an instruction's execution on the operand stack of the current frame is represented textually, with the stack growing from left to right and each value represented separately. Thus,
+     *         ..., value1, value2 →
+     *         ..., result
+     *     shows an operation that begins by having value2 on top of the operand stack with value1 just beneath it.
+     *     As a result of the execution of the instruction, value1 and value2 are popped from the operand stack and replaced by result value, which has been calculated by the instruction.
+     *     The remainder of the operand stack, represented by an ellipsis (...), is unaffected by the instruction's execution.
+     *
+     *     Values of types long and double are represented by a single entry on the operand stack.
+     *
+     *     In The Java Virtual Machine Specification, First Edition, values on the operand stack of types long and double were each represented in the stack diagram by two entries.
+     */
+
+    /**
+     * Operation:
+     *     Load reference from array
+     * Format:
+     *     aaload
+     * Forms:
+     *     aaload = 50 (0x32)
+     * Operand Stack:
+     *     ..., arrayref, index →
+     *     ..., value
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type reference.
+     *     The index must be of type int. Both arrayref and index are popped from the operand stack.
+     *     The reference value in the component of the array at index is retrieved and pushed onto the operand stack.
+     *  Run-time Exceptions:
+     *      If arrayref is null, aaload throws a NullPointerException.
+     *
+     *      Otherwise, if index is not within the bounds of the array referenced by arrayref, the aaload instruction throws an ArrayIndexOutOfBoundsException.
+     */
     AALOAD((byte) 0x32),
+
+    /**
+     * Operation:
+     *     Store into reference array
+     * Format:
+     *     aastore
+     * Forms:
+     *     aastore = 83 (0x53)
+     * Operand Stack:
+     *     ..., arrayref, index, value →
+     *     ...
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array whose components are of type reference.
+     *     The index must be of type int and value must be of type reference. The arrayref, index, and value are popped from the operand stack.
+     *     The reference value is stored as the component of the array at index.
+     *
+     *     At run time, the type of value must be compatible with the type of the components of the array referenced by arrayref.
+     *     Specifically, assignment of a value of reference type S (source) to an array component of reference type T (target) is allowed only if:
+     *
+     *     If S is a class type, then:
+     *         If T is a class type, then S must be the same class as T, or S must be a subclass of T;
+     *         If T is an interface type, then S must implement interface T.
+     *
+     *     If S is an interface type, then:
+     *         If T is a class type, then T must be Object.
+     *         If T is an interface type, then T must be the same interface as S or a superinterface of S.
+     *
+     *     If S is an array type, namely, the type SC[], that is, an array of components of type SC, then:
+     *         If T is a class type, then T must be Object.
+     *         If T is an interface type, then T must be one of the interfaces implemented by arrays.
+     *         If T is an array type TC[], that is, an array of components of type TC, then one of the following must be true:
+     *             TC and SC are the same primitive type.
+     *             TC and SC are reference types, and type SC is assignable to TC by these run-time rules.
+     * Run-time Exceptions:
+     *     If arrayref is null, aastore throws a NullPointerException.
+     *
+     *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the aastore instruction throws an ArrayIndexOutOfBoundsException.
+     *
+     *     Otherwise, if arrayref is not null and the actual type of value is not assignment compatible with the actual type of the components of the array, aastore throws an ArrayStoreException.
+     */
     AASTORE((byte) 0x53),
+
+    /**
+     * Operation:
+     *     Push null
+     * Format:
+     *     aconst_null
+     * Forms:
+     *     aconst_null = 1 (0x1)
+     * Operand Stack:
+     *     ... →
+     *     ..., null
+     * Description:
+     *     Push the null object reference onto the operand stack.
+     * Notes:
+     *     The Java Virtual Machine does not mandate a concrete value for null.
+     */
     ACONST_NULL((byte) 0x1),
+
+    /**
+     * Operation:
+     *     Load reference from local variable
+     * Format:
+     *     aload
+     *     index
+     * Forms:
+     *     aload = 25 (0x19)
+     * Operand Stack:
+     *     ... →
+     *     ..., objectref
+     * Description:
+     *     The index is an unsigned byte that must be an index into the local variable array of the current frame.
+     *     The local variable at index must contain a reference. The objectref in the local variable at index is pushed onto the operand stack.
+     * Notes:
+     *     The aload instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the astore instruction is intentional.
+     *
+     *     The aload opcode can be used in conjunction with the wide instruction to access a local variable using a two-byte unsigned index.
+     */
     ALOAD((byte) 0x19),
+
+    /**
+     * Operation:
+     *     Load reference from local variable
+     * Format:
+     *     aload_<n>
+     * Forms:
+     *     aload_0 = 42 (0x2a)
+     * Operand Stack:
+     *     ... →
+     *     ..., objectref
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame. The local variable at <n> must contain a reference.
+     *     The objectref in the local variable at <n> is pushed onto the operand stack.
+     * Notes:
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
+     */
     ALOAD_0((byte) 0x2a),
+
+    /**
+     * Operation:
+     *     Load reference from local variable
+     * Format:
+     *     aload_<n>
+     * Forms:
+     *     aload_1 = 43 (0x2b)
+     * Operand Stack:
+     *     ... →
+     *     ..., objectref
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame. The local variable at <n> must contain a reference.
+     *     The objectref in the local variable at <n> is pushed onto the operand stack.
+     * Notes:
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
+     */
     ALOAD_1((byte) 0x2b),
+
+    /**
+     * Operation:
+     *     Load reference from local variable
+     * Format:
+     *     aload_<n>
+     * Forms:
+     *     aload_2 = 44 (0x2c)
+     * Operand Stack:
+     *     ... →
+     *     ..., objectref
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame. The local variable at <n> must contain a reference.
+     *     The objectref in the local variable at <n> is pushed onto the operand stack.
+     * Notes:
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
+     */
     ALOAD_2((byte) 0x2c),
+
+    /**
+     * Operation:
+     *     Load reference from local variable
+     * Format:
+     *     aload_<n>
+     * Forms:
+     *     aload_3 = 45 (0x2d)
+     * Operand Stack:
+     *     ... →
+     *     ..., objectref
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame. The local variable at <n> must contain a reference.
+     *     The objectref in the local variable at <n> is pushed onto the operand stack.
+     * Notes:
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
+     */
     ALOAD_3((byte) 0x2d),
+
+    /**
+     * Operation:
+     *     Create new array of reference
+     * Format:
+     *     anewarray
+     *     indexbyte1
+     *     indexbyte2
+     * Forms:
+     *     anewarray = 189 (0xbd)
+     * Operand Stack:
+     *     ..., count →
+     *     ..., arrayref
+     * Description:
+     *     The count must be of type int. It is popped off the operand stack. The count represents the number of components of the array to be created.
+     *     The unsigned indexbyte1 and indexbyte2 are used to construct an index into the run-time constant pool of the current class, where the value of the index is (indexbyte1 << 8) | indexbyte2.
+     *     The run-time constant pool item at that index must be a symbolic reference to a class, array, or interface type.
+     *     The named class, array, or interface type is resolved. A new array with components of that type, of length count, is allocated from the garbage-collected heap, and a reference arrayref to this new array object is pushed onto the operand stack.
+     *     All components of the new array are initialized to null, the default value for reference types.
+     * Linking Exceptions:
+     *     During resolution of the symbolic reference to the class, array, or interface type, any of the exceptions can be thrown.
+     * Run-time Exceptions:
+     *     Otherwise, if count is less than zero, the anewarray instruction throws a NegativeArraySizeException.
+     * Notes:
+     *     The anewarray instruction is used to create a single dimension of an array of object references or part of a multidimensional array.
+     */
     ANEWARRAY((byte) 0xbd),
+
+    /**
+     * Operation:
+     *     Return reference from method
+     * Format:
+     *     areturn
+     * Operand Stack:
+     *     ..., objectref →
+     *     [empty]
+     * Description:
+     *     The objectref must be of type reference and must refer to an object of a type that is assignment compatible with the type represented by the return descriptor of the current method.
+     *     If the current method is a synchronized method, the monitor entered or reentered on invocation of the method is updated and possibly exited as if by execution of a monitorexit instruction in the current thread.
+     *     If no exception is thrown, objectref is popped from the operand stack of the current frame and pushed onto the operand stack of the frame of the invoker. Any other values on the operand stack of the current method are discarded.
+     *
+     *     The interpreter then reinstates the frame of the invoker and returns control to the invoker.
+     * Run-time Exceptions:
+     *     If the Java Virtual Machine implementation does not enforce the rules on structured locking, then if the current method is a synchronized method and the current thread is not the owner of the monitor entered or reentered on invocation of the method, areturn throws an IllegalMonitorStateException.
+     *     This can happen, for example, if a synchronized method contains a monitorexit instruction, but no monitorenter instruction, on the object on which the method is synchronized.
+     *
+     *     Otherwise, if the Java Virtual Machine implementation enforces the rules on structured locking and if the first of those rules is violated during invocation of the current method, then areturn throws an IllegalMonitorStateException.
+     */
     ARETURN((byte) 0xb0),
+
+    /**
+     * Operation:
+     *     Get length of array
+     * Format:
+     *     arraylength
+     * Forms:
+     *     arraylength = 190 (0xbe)
+     * Operand Stack:
+     *     ..., arrayref →
+     *     ..., length
+     * Description:
+     *     The arrayref must be of type reference and must refer to an array.
+     *     It is popped from the operand stack. The length of the array it references is determined.
+     *     That length is pushed onto the operand stack as an int.
+     * Run-time Exceptions:
+     *     If the arrayref is null, the arraylength instruction throws a NullPointerException.
+     */
     ARRAYLENGTH((byte) 0xbe),
+
+    /**
+     * Operation:
+     *     Store reference into local variable
+     * Format:
+     *     astore
+     *     index
+     * Forms:
+     *     astore = 58 (0x3a)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ...
+     * Description:
+     *     The index is an unsigned byte that must be an index into the local variable array of the current frame.
+     *     The objectref on the top of the operand stack must be of type returnAddress or of type reference.
+     *     It is popped from the operand stack, and the value of the local variable at index is set to objectref.
+     * Notes:
+     *     The astore instruction is used with an objectref of type returnAddress when implementing the finally clause of the Java programming language.
+     *
+     *     The aload instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the astore instruction is intentional.
+     *
+     *     The astore opcode can be used in conjunction with the wide instruction to access a local variable using a two-byte unsigned index.
+     */
     ASTORE((byte) 0x3a),
+
+    /**
+     * Operation:
+     *     Store reference into local variable
+     * Format:
+     *     astore_<n>
+     * Forms:
+     *     astore_0 = 75 (0x4b)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ...
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame.
+     *     The objectref on the top of the operand stack must be of type returnAddress or of type reference.
+     *     It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
+     * Notes:
+     *     An astore_<n> instruction is used with an objectref of type returnAddress when implementing the finally clauses of the Java programming language.
+     *
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
+     */
     ASTORE_0((byte) 0x4b),
+
+    /**
+     * Operation:
+     *     Store reference into local variable
+     * Format:
+     *     astore_<n>
+     * Forms:
+     *     astore_1 = 76 (0x4c)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ...
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame.
+     *     The objectref on the top of the operand stack must be of type returnAddress or of type reference.
+     *     It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
+     * Notes:
+     *     An astore_<n> instruction is used with an objectref of type returnAddress when implementing the finally clauses of the Java programming language.
+     *
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
+     */
     ASTORE_1((byte) 0x4c),
+
+    /**
+     * Operation:
+     *     Store reference into local variable
+     * Format:
+     *     astore_<n>
+     * Forms:
+     *     astore_2 = 77 (0x4d)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ...
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame.
+     *     The objectref on the top of the operand stack must be of type returnAddress or of type reference.
+     *     It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
+     * Notes:
+     *     An astore_<n> instruction is used with an objectref of type returnAddress when implementing the finally clauses of the Java programming language.
+     *
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
+     */
     ASTORE_2((byte) 0x4d),
+
+    /**
+     * Operation:
+     *     Store reference into local variable
+     * Format:
+     *     astore_<n>
+     * Forms:
+     *     astore_3 = 78 (0x4e)
+     * Operand Stack:
+     *     ..., objectref →
+     *     ...
+     * Description:
+     *     The <n> must be an index into the local variable array of the current frame.
+     *     The objectref on the top of the operand stack must be of type returnAddress or of type reference.
+     *     It is popped from the operand stack, and the value of the local variable at <n> is set to objectref.
+     * Notes:
+     *     An astore_<n> instruction is used with an objectref of type returnAddress when implementing the finally clauses of the Java programming language.
+     *
+     *     An aload_<n> instruction cannot be used to load a value of type returnAddress from a local variable onto the operand stack.
+     *     This asymmetry with the corresponding astore_<n> instruction is intentional.
+     *
+     *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
+     */
     ASTORE_3((byte) 0x4e),
+
+    /**
+     * Operation:
+     *     Throw exception or error
+     * Format:
+     *     athrow
+     * Forms:
+     *     athrow = 191 (0xbf)
+     * Operand Stack:
+     *     ..., objectref →
+     *     objectref
+     * Description:
+     *     The objectref must be of type reference and must refer to an object that is an instance of class Throwable or of a subclass of Throwable. It is popped from the operand stack.
+     *     The objectref is then thrown by searching the current method for the first exception handler that matches the class of objectref, as given by the algorithm.
+     *
+     *     If an exception handler that matches objectref is found, it contains the location of the code intended to handle this exception.
+     *     The pc register is reset to that location, the operand stack of the current frame is cleared, objectref is pushed back onto the operand stack, and execution continues.
+     *
+     *     If no matching exception handler is found in the current frame, that frame is popped.
+     *     If the current frame represents an invocation of a synchronized method, the monitor entered or reentered on invocation of the method is exited as if by execution of a monitorexit instruction.
+     *     Finally, the frame of its invoker is reinstated, if such a frame exists, and the objectref is rethrown. If no such frame exists, the current thread exits.
+     * Run-time Exceptions:
+     *     If objectref is null, athrow throws a NullPointerException instead of objectref.
+     *
+     *     Otherwise, if the Java Virtual Machine implementation does not enforce the rules on structured locking,
+     *     then if the method of the current frame is a synchronized method and the current thread is not the owner of the monitor entered or reentered on invocation of the method,
+     *     athrow throws an IllegalMonitorStateException instead of the object previously being thrown. This can happen, for example, if an abruptly completing synchronized method contains a monitorexit instruction,
+     *     but no monitorenter instruction, on the object on which the method is synchronized.
+     *
+     *     Otherwise, if the Java Virtual Machine implementation enforces the rules on structured locking and if the first of those rules is violated during invocation of the current method,
+     *     then athrow throws an IllegalMonitorStateException instead of the object previously being thrown.
+     * Notes:
+     *     The operand stack diagram for the athrow instruction may be misleading: If a handler for this exception is matched in the current method, the athrow instruction discards all the values on the operand stack,
+     *     then pushes the thrown object onto the operand stack. However, if no handler is matched in the current method and the exception is thrown farther up the method invocation chain,
+     *     then the operand stack of the method (if any) that handles the exception is cleared and objectref is pushed onto that empty operand stack.
+     *     All intervening frames from the method that threw the exception up to, but not including, the method that handles the exception are discarded.
+     */
     ATHROW((byte) 0xbf),
     BALOAD((byte) 0x33),
     BASTORE((byte) 0x54),
