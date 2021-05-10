@@ -75,7 +75,7 @@ public enum ASMInstruction implements Instruction {
      *
      *      Otherwise, if index is not within the bounds of the array referenced by arrayref, the aaload instruction throws an ArrayIndexOutOfBoundsException.
      */
-    AALOAD((byte) 0x32),
+    AALOAD((byte) 0x32, 0, 1, 2),
 
     /**
      * Operation:
@@ -116,7 +116,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Otherwise, if arrayref is not null and the actual type of value is not assignment compatible with the actual type of the components of the array, aastore throws an ArrayStoreException.
      */
-    AASTORE((byte) 0x53),
+    AASTORE((byte) 0x53, 0, 0, 3),
 
     /**
      * Operation:
@@ -133,7 +133,7 @@ public enum ASMInstruction implements Instruction {
      * Notes:
      *     The Java Virtual Machine does not mandate a concrete value for null.
      */
-    ACONST_NULL((byte) 0x1),
+    ACONST_NULL((byte) 0x1, 0, 1, 0),
 
     /**
      * Operation:
@@ -155,7 +155,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     The aload opcode can be used in conjunction with the wide instruction to access a local variable using a two-byte unsigned index.
      */
-    ALOAD((byte) 0x19),
+    ALOAD((byte) 0x19, 1, 1, 0),
 
     /**
      * Operation:
@@ -176,7 +176,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
      */
-    ALOAD_0((byte) 0x2a),
+    ALOAD_0((byte) 0x2a, 0, 1, 0),
 
     /**
      * Operation:
@@ -197,7 +197,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
      */
-    ALOAD_1((byte) 0x2b),
+    ALOAD_1((byte) 0x2b, 0, 1, 0),
 
     /**
      * Operation:
@@ -218,7 +218,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
      */
-    ALOAD_2((byte) 0x2c),
+    ALOAD_2((byte) 0x2c, 0, 1, 0),
 
     /**
      * Operation:
@@ -239,7 +239,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the aload_<n> instructions is the same as aload with an index of <n>, except that the operand <n> is implicit.
      */
-    ALOAD_3((byte) 0x2d),
+    ALOAD_3((byte) 0x2d, 0, 1, 0),
 
     /**
      * Operation:
@@ -266,7 +266,7 @@ public enum ASMInstruction implements Instruction {
      * Notes:
      *     The anewarray instruction is used to create a single dimension of an array of object references or part of a multidimensional array.
      */
-    ANEWARRAY((byte) 0xbd),
+    ANEWARRAY((byte) 0xbd, 2, 1, 1),
 
     /**
      * Operation:
@@ -288,7 +288,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Otherwise, if the Java Virtual Machine implementation enforces the rules on structured locking and if the first of those rules is violated during invocation of the current method, then areturn throws an IllegalMonitorStateException.
      */
-    ARETURN((byte) 0xb0),
+    ARETURN((byte) 0xb0, 0, 0, -1),
 
     /**
      * Operation:
@@ -307,7 +307,7 @@ public enum ASMInstruction implements Instruction {
      * Run-time Exceptions:
      *     If the arrayref is null, the arraylength instruction throws a NullPointerException.
      */
-    ARRAYLENGTH((byte) 0xbe),
+    ARRAYLENGTH((byte) 0xbe, 0, 1, 1),
 
     /**
      * Operation:
@@ -332,7 +332,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     The astore opcode can be used in conjunction with the wide instruction to access a local variable using a two-byte unsigned index.
      */
-    ASTORE((byte) 0x3a),
+    ASTORE((byte) 0x3a, 1, 0, 1),
 
     /**
      * Operation:
@@ -356,7 +356,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
      */
-    ASTORE_0((byte) 0x4b),
+    ASTORE_0((byte) 0x4b, 0, 0, 1),
 
     /**
      * Operation:
@@ -380,7 +380,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
      */
-    ASTORE_1((byte) 0x4c),
+    ASTORE_1((byte) 0x4c, 0, 0, 1),
 
     /**
      * Operation:
@@ -404,7 +404,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
      */
-    ASTORE_2((byte) 0x4d),
+    ASTORE_2((byte) 0x4d, 0, 0, 1),
 
     /**
      * Operation:
@@ -428,7 +428,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Each of the astore_<n> instructions is the same as astore with an index of <n>, except that the operand <n> is implicit.
      */
-    ASTORE_3((byte) 0x4e),
+    ASTORE_3((byte) 0x4e, 0, 0, 1),
 
     /**
      * Operation:
@@ -466,7 +466,7 @@ public enum ASMInstruction implements Instruction {
      *     then the operand stack of the method (if any) that handles the exception is cleared and objectref is pushed onto that empty operand stack.
      *     All intervening frames from the method that threw the exception up to, but not including, the method that handles the exception are discarded.
      */
-    ATHROW((byte) 0xbf),
+    ATHROW((byte) 0xbf, 0, 1, -1),
 
     /**
      * Operation:
@@ -491,7 +491,7 @@ public enum ASMInstruction implements Instruction {
      *     In Oracle's Java Virtual Machine implementation, boolean arrays - that is, arrays of type T_BOOLEAN - are implemented as arrays of 8-bit values.
      *     Other implementations may implement packed boolean arrays; the baload instruction of such implementations must be used to access those arrays.
      */
-    BALOAD((byte) 0x33),
+    BALOAD((byte) 0x33, 0, 1, 2),
 
     /**
      * Operator:
@@ -516,7 +516,7 @@ public enum ASMInstruction implements Instruction {
      *     In Oracle's Java Virtual Machine implementation, boolean arrays - that is, arrays of type T_BOOLEAN - are implemented as arrays of 8-bit values.
      *     Other implementations may implement packed boolean arrays; in such implementations the bastore instruction must be able to store boolean values into packed boolean arrays as well as byte values into byte arrays.
      */
-    BASTORE((byte) 0x54),
+    BASTORE((byte) 0x54, 0, 0, 3),
 
     /**
      * Operator:
@@ -532,9 +532,9 @@ public enum ASMInstruction implements Instruction {
      * Description:
      *     The immediate byte is sign-extended to an int value. That value is pushed onto the operand stack.
      */
-    BIPUSH((byte) 0x10),
+    BIPUSH((byte) 0x10, 1, 1, 0),
 
-    BREAKPOINT((byte) 0xca),
+    BREAKPOINT((byte) 0xca, 0, 0, 0),
 
     /**
      * Operator:
@@ -555,7 +555,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the caload instruction throws an ArrayIndexOutOfBoundsException.
      */
-    CALOAD((byte) 0x34),
+    CALOAD((byte) 0x34, 0, 1, 2),
 
     /**
      * Operator:
@@ -576,7 +576,7 @@ public enum ASMInstruction implements Instruction {
      *
      *     Otherwise, if index is not within the bounds of the array referenced by arrayref, the castore instruction throws an ArrayIndexOutOfBoundsException.
      */
-    CASTORE((byte) 0x55),
+    CASTORE((byte) 0x55, 0, 0, 3),
 
     /**
      * Operator:
@@ -624,7 +624,7 @@ public enum ASMInstruction implements Instruction {
      *     The checkcast instruction is very similar to the instanceof instruction.
      *     It differs in its treatment of null, its behavior when its test fails (checkcast throws an exception, instanceof pushes a result code), and its effect on the operand stack.
      */
-    CHECKCAST((byte) 0xc0),
+    CHECKCAST((byte) 0xc0, 2, 1, 1),
 
     /**
      * Operator:
@@ -652,7 +652,7 @@ public enum ASMInstruction implements Instruction {
      *     The d2f instruction performs a narrowing primitive conversion.
      *     It may lose information about the overall magnitude of value' and may also lose precision.
      */
-    D2F((byte) 0x90),
+    D2F((byte) 0x90, 0, 1, 1),
 
     /**
      * Operator:
@@ -680,7 +680,7 @@ public enum ASMInstruction implements Instruction {
      * Notes:
      *     The d2i instruction performs a narrowing primitive conversion. It may lose information about the overall magnitude of value' and may also lose precision.
      */
-    D2I((byte) 0x8e),
+    D2I((byte) 0x8e, 0, 1, 1),
 
     /**
      * Operator:
@@ -708,193 +708,195 @@ public enum ASMInstruction implements Instruction {
      * Notes:
      *     The d2l instruction performs a narrowing primitive conversion. It may lose information about the overall magnitude of value' and may also lose precision.
      */
-    D2L((byte) 0x8f),
-    DADD((byte) 0x63),
-    DALOAD((byte) 0x31),
-    DASTORE((byte) 0x52),
-    DCMPG((byte) 0x98),
-    DCMPL((byte) 0x97),
-    DCONST_0((byte) 0x0e),
-    DCONST_1((byte) 0x0f),
-    DDIV((byte) 0x6f),
-    DLOAD((byte) 0x18),
-    DLOAD_0((byte) 0x26),
-    DLOAD_1((byte) 0x27),
-    DLOAD_2((byte) 0x28),
-    DLOAD_3((byte) 0x29),
-    DMUL((byte) 0x6b),
-    DNEG((byte) 0x77),
-    DREM((byte) 0x73),
-    DRETURN((byte) 0xaf),
-    DSTORE((byte) 0x39),
-    DSTORE_0((byte) 0x47),
-    DSTORE_1((byte) 0x48),
-    DSTORE_2((byte) 0x49),
-    DSTORE_3((byte) 0x4a),
-    DSUB((byte) 0x67),
-    DUP((byte) 0x59),
-    DUP_X1((byte) 0x5a),
-    DUP_X2((byte) 0x5b),
-    DUP2((byte) 0x5c),
-    DUP2_X1((byte) 0x5d),
-    DUP2_X2((byte) 0x5e),
-    F2D((byte) 0x8d),
-    F2I((byte) 0x8b),
-    F2L((byte) 0x8c),
-    FADD((byte) 0x62),
-    FALOAD((byte) 0x30),
-    FASTORE((byte) 0x51),
-    FCMPG((byte) 0x96),
-    FCMPL((byte) 0x95),
-    FCONST_0((byte) 0x0b),
-    FCONST_1((byte) 0x0c),
-    FCONST_2((byte) 0x0d),
-    FDIV((byte) 0x6e),
-    FLOAD((byte) 0x17),
-    FLOAD_0((byte) 0x22),
-    FLOAD_1((byte) 0x23),
-    FLOAD_2((byte) 0x24),
-    FLOAD_3((byte) 0x25),
-    FMUL((byte) 0x6a),
-    FNEG((byte) 0x76),
-    FREM((byte) 0x72),
-    FRETURN((byte) 0xae),
-    FSTORE((byte) 0x38),
-    FSTORE_0((byte) 0x43),
-    FSTORE_1((byte) 0x44),
-    FSTORE_2((byte) 0x45),
-    FSTORE_3((byte) 0x46),
-    FSUB((byte) 0x66),
-    GETFIELD((byte) 0xb4),
-    GETSTATIC((byte) 0xb2),
-    GOTO((byte) 0xa7),
-    GOTO_W((byte) 0xc8),
-    I2B((byte) 0x91),
-    I2C((byte) 0x92),
-    I2D((byte) 0x87),
-    I2F((byte) 0x86),
-    I2L((byte) 0x85),
-    I2S((byte) 0x93),
-    IADD((byte) 0x60),
-    IALOAD((byte) 0x2e),
-    IAND((byte) 0x7e),
-    IASTORE((byte) 0x4f),
-    ICONST_M1((byte) 0x2),
-    ICONST_0((byte) 0x3),
-    ICONST_1((byte) 0x4),
-    ICONST_2((byte) 0x5),
-    ICONST_3((byte) 0x6),
-    ICONST_4((byte) 0x7),
-    ICONST_5((byte) 0x8),
-    IDIV((byte) 0x6c),
-    IF_ACMPEQ((byte) 0xa5),
-    IF_ACMPNE((byte) 0xa6),
-    IF_ICMPEQ((byte) 0x9f),
-    IF_ICMPGE((byte) 0xa2),
-    IF_ICMPGT((byte) 0xa3),
-    IF_ICMPLE((byte) 0xa4),
-    IF_ICMPLT((byte) 0xa1),
-    IF_ICMPNE((byte) 0xa0),
-    IFEQ((byte) 0x99),
-    IFGE((byte) 0x9c),
-    IFGT((byte) 0x9d),
-    IFLE((byte) 0x9e),
-    IFLT((byte) 0x9b),
-    IFNE((byte) 0x9a),
-    IFNONNULL((byte) 0xc7),
-    IFNULL((byte) 0xc6),
-    IINC((byte) 0x84),
-    ILOAD((byte) 0x15),
-    ILOAD_0((byte) 0x1a),
-    ILOAD_1((byte) 0x1b),
-    ILOAD_2((byte) 0x1c),
-    ILOAD_3((byte) 0x1d),
-    IMPDEP1((byte) 0xfe),
-    IMPDEP2((byte) 0xff),
-    IMUL((byte) 0x68),
-    INEG((byte) 0x74),
-    INSTANCEOF((byte) 0xc1),
-    INVOKEDYNAMIC((byte) 0xba),
-    INVOKEINTERFACE((byte) 0xb9),
-    INVOKESPECIAL((byte) 0xb7),
-    INVOKESTATIC((byte) 0xb8),
-    INVOKEVIRTUAL((byte) 0xb6),
-    IOR((byte) 0x80),
-    IREM((byte) 0x70),
-    IRETURN((byte) 0xac),
-    ISHL((byte) 0x78),
-    ISHR((byte) 0x7a),
-    ISTORE((byte) 0x36),
-    ISTORE_0((byte) 0x3b),
-    ISTORE_1((byte) 0x3c),
-    ISTORE_2((byte) 0x3d),
-    ISTORE_3((byte) 0x3e),
-    ISUB((byte) 0x64),
-    IUSHR((byte) 0x7c),
-    IXOR((byte) 0x82),
-    JSR((byte) 0xa8),
-    JSR_W((byte) 0xc9),
-    L2D((byte) 0x8a),
-    L2F((byte) 0x89),
-    L2I((byte) 0x88),
-    LADD((byte) 0x61),
-    LALOAD((byte) 0x2f),
-    LAND((byte) 0x7f),
-    LASTORE((byte) 0x50),
-    LCMP((byte) 0x94),
-    LCONST_0((byte) 0x9),
-    LCONST_1((byte) 0x0a),
-    LDC((byte) 0x12),
-    LDC_W((byte) 0x13),
-    LDC2_W((byte) 0x14),
-    LDIV((byte) 0x6d),
-    LLOAD((byte) 0x16),
-    LLOAD_0((byte) 0x1e),
-    LLOAD_1((byte) 0x1f),
-    LLOAD_2((byte) 0x20),
-    LLOAD_3((byte) 0x21),
-    LMUL((byte) 0x69),
-    LNEG((byte) 0x75),
-    LOOKUPSWITCH((byte) 0xab),
-    LOR((byte) 0x81),
-    LREM((byte) 0x71),
-    LRETURN((byte) 0xad),
-    LSHL((byte) 0x79),
-    LSHR((byte) 0x7b),
-    LSTORE((byte) 0x37),
-    LSTORE_0((byte) 0x3f),
-    LSTORE_1((byte) 0x40),
-    LSTORE_2((byte) 0x41),
-    LSTORE_3((byte) 0x42),
-    LSUB((byte) 0x65),
-    LUSHR((byte) 0x7d),
-    LXOR((byte) 0x83),
-    MONITORENTER((byte) 0xc2),
-    MONITOREXIT((byte) 0xc3),
-    MULTIANEWARRAY((byte) 0xc5),
-    NEW((byte) 0xbb),
-    NEWARRAY((byte) 0xbc),
-    NOP((byte) 0x0),
-    POP((byte) 0x57),
-    POP2((byte) 0x58),
-    PUTFIELD((byte) 0xb5),
-    PUTSTATIC((byte) 0xb3),
-    RET((byte) 0xa9),
-    RETURN((byte) 0xb1),
-    SALOAD((byte) 0x35),
-    SASTORE((byte) 0x56),
-    SIPUSH((byte) 0x11),
-    SWAP((byte) 0x5f),
-    TABLESWITCH((byte) 0xaa),
-    WIDE((byte) 0xc4);
+    D2L((byte) 0x8f, 0, 1, 1),
+    DADD((byte) 0x63, 0, 1, 2),
+    DALOAD((byte) 0x31, 0, 1, 2),
+    DASTORE((byte) 0x52, 0, 0, 3),
+    DCMPG((byte) 0x98, 0, 1, 2),
+    DCMPL((byte) 0x97, 0, 1, 2),
+    DCONST_0((byte) 0x0e, 0, 1, 0),
+    DCONST_1((byte) 0x0f, 0, 1, 0),
+    DDIV((byte) 0x6f, 0, 1, 2),
+    DLOAD((byte) 0x18, 1, 1, 0),
+    DLOAD_0((byte) 0x26, 0, 1, 0),
+    DLOAD_1((byte) 0x27, 0, 1, 0),
+    DLOAD_2((byte) 0x28, 0, 1, 0),
+    DLOAD_3((byte) 0x29, 0, 1, 0),
+    DMUL((byte) 0x6b, 0, 1, 2),
+    DNEG((byte) 0x77, 0, 1, 1),
+    DREM((byte) 0x73, 0, 1, 2),
+    DRETURN((byte) 0xaf, 0, 0, -1),
+    DSTORE((byte) 0x39, 1, 0, 1),
+    DSTORE_0((byte) 0x47, 0, 0, 1),
+    DSTORE_1((byte) 0x48, 0, 0, 1),
+    DSTORE_2((byte) 0x49, 0, 0, 1),
+    DSTORE_3((byte) 0x4a, 0, 0, 1),
+    DSUB((byte) 0x67, 0, 1, 2),
+    DUP((byte) 0x59, 0, 2, 1),
+    DUP_X1((byte) 0x5a, 0, 3, 2),
+    DUP_X2((byte) 0x5b, 0, 4, 3),
+    DUP2((byte) 0x5c, 0, 4, 2),
+    DUP2_X1((byte) 0x5d, 0, 5, 3),
+    DUP2_X2((byte) 0x5e, 0, 6, 4),
+    F2D((byte) 0x8d, 0, 1, 1),
+    F2I((byte) 0x8b, 0, 1, 1),
+    F2L((byte) 0x8c, 0, 1, 1),
+    FADD((byte) 0x62, 0, 1, 2),
+    FALOAD((byte) 0x30, 0, 1, 2),
+    FASTORE((byte) 0x51, 0, 0, 3),
+    FCMPG((byte) 0x96, 0, 1, 2),
+    FCMPL((byte) 0x95, 0, 1, 2),
+    FCONST_0((byte) 0x0b, 0, 1, 0),
+    FCONST_1((byte) 0x0c, 0, 1, 0),
+    FCONST_2((byte) 0x0d, 0, 1, 0),
+    FDIV((byte) 0x6e, 0, 1, 2),
+    FLOAD((byte) 0x17, 1, 1, 0),
+    FLOAD_0((byte) 0x22, 0, 1, 0),
+    FLOAD_1((byte) 0x23, 0, 1, 0),
+    FLOAD_2((byte) 0x24, 0, 1, 0),
+    FLOAD_3((byte) 0x25, 0, 1, 0),
+    FMUL((byte) 0x6a, 0, 1, 2),
+    FNEG((byte) 0x76, 0, 1, 1),
+    FREM((byte) 0x72, 0, 1, 2),
+    FRETURN((byte) 0xae, 0, 0, -1),
+    FSTORE((byte) 0x38, 1, 0, 1),
+    FSTORE_0((byte) 0x43, 0, 0, 1),
+    FSTORE_1((byte) 0x44, 0, 0, 1),
+    FSTORE_2((byte) 0x45, 0, 0, 1),
+    FSTORE_3((byte) 0x46, 0, 0, 1),
+    FSUB((byte) 0x66, 0, 1, 2),
+    GETFIELD((byte) 0xb4, 2, 1, 1),
+    GETSTATIC((byte) 0xb2, 2, 1, 0),
+    GOTO((byte) 0xa7, 2, 0, 0),
+    GOTO_W((byte) 0xc8, 4, 0, 0),
+    I2B((byte) 0x91, 0, 1, 1),
+    I2C((byte) 0x92, 0, 1, 1),
+    I2D((byte) 0x87, 0, 1, 1),
+    I2F((byte) 0x86, 0, 1, 1),
+    I2L((byte) 0x85, 0, 1, 1),
+    I2S((byte) 0x93, 0, 1, 1),
+    IADD((byte) 0x60, 0, 1, 2),
+    IALOAD((byte) 0x2e, 0, 1, 2),
+    IAND((byte) 0x7e, 0, 1, 2),
+    IASTORE((byte) 0x4f, 0, 0, 3),
+    ICONST_M1((byte) 0x2, 0, 1, 0),
+    ICONST_0((byte) 0x3, 0, 1, 0),
+    ICONST_1((byte) 0x4, 0, 1, 0),
+    ICONST_2((byte) 0x5, 0, 1, 0),
+    ICONST_3((byte) 0x6, 0, 1, 0),
+    ICONST_4((byte) 0x7, 0, 1, 0),
+    ICONST_5((byte) 0x8, 0, 1, 0),
+    IDIV((byte) 0x6c, 0, 1, 2),
+    IF_ACMPEQ((byte) 0xa5, 2, 0, 2),
+    IF_ACMPNE((byte) 0xa6, 2, 0, 2),
+    IF_ICMPEQ((byte) 0x9f, 2, 0, 2),
+    IF_ICMPGE((byte) 0xa2, 2, 0, 2),
+    IF_ICMPGT((byte) 0xa3, 2, 0, 2),
+    IF_ICMPLE((byte) 0xa4, 2, 0, 2),
+    IF_ICMPLT((byte) 0xa1, 2, 0, 2),
+    IF_ICMPNE((byte) 0xa0, 2, 0, 2),
+    IFEQ((byte) 0x99, 2, 0, 1),
+    IFGE((byte) 0x9c, 2, 0, 1),
+    IFGT((byte) 0x9d, 2, 0, 1),
+    IFLE((byte) 0x9e, 2, 0, 1),
+    IFLT((byte) 0x9b, 2, 0, 1),
+    IFNE((byte) 0x9a, 2, 0, 1),
+    IFNONNULL((byte) 0xc7, 2, 0, 1),
+    IFNULL((byte) 0xc6, 2, 0, 1),
+    IINC((byte) 0x84, 2, 0, 0),
+    ILOAD((byte) 0x15, 1, 1, 0),
+    ILOAD_0((byte) 0x1a, 0, 1, 0),
+    ILOAD_1((byte) 0x1b, 0, 1, 0),
+    ILOAD_2((byte) 0x1c, 0, 1, 0),
+    ILOAD_3((byte) 0x1d, 0, 1, 0),
+    IMPDEP1((byte) 0xfe, -1, -1, -1),
+    IMPDEP2((byte) 0xff, -1, -1, -1),
+    IMUL((byte) 0x68, 0, 1, 2),
+    INEG((byte) 0x74, 0, 1, 1),
+    INSTANCEOF((byte) 0xc1, 2, 1, 1),
+    INVOKEDYNAMIC((byte) 0xba, 4, 0, -2),
+    INVOKEINTERFACE((byte) 0xb9, 4, 0, -2),
+    INVOKESPECIAL((byte) 0xb7, 2, 0, -2),
+    INVOKESTATIC((byte) 0xb8, 2, 0, -2),
+    INVOKEVIRTUAL((byte) 0xb6, 2, 0, -2),
+    IOR((byte) 0x80, 0, 1, 2),
+    IREM((byte) 0x70, 0, 1, 2),
+    IRETURN((byte) 0xac, 0, 0, -1),
+    ISHL((byte) 0x78, 0, 1, 2),
+    ISHR((byte) 0x7a, 0, 1, 2),
+    ISTORE((byte) 0x36, 1, 0, 1),
+    ISTORE_0((byte) 0x3b, 0, 0, 1),
+    ISTORE_1((byte) 0x3c, 0, 0, 1),
+    ISTORE_2((byte) 0x3d, 0, 0, 1),
+    ISTORE_3((byte) 0x3e, 0, 0, 1),
+    ISUB((byte) 0x64, 0, 1, 2),
+    IUSHR((byte) 0x7c, 0, 1, 2),
+    IXOR((byte) 0x82, 0, 1, 2),
+    JSR((byte) 0xa8, 2, 1, 0),
+    JSR_W((byte) 0xc9, 4, 1, 0),
+    L2D((byte) 0x8a, 0, 1, 1),
+    L2F((byte) 0x89, 0, 1, 1),
+    L2I((byte) 0x88, 0, 1, 1),
+    LADD((byte) 0x61, 0, 1, 2),
+    LALOAD((byte) 0x2f, 0, 1, 2),
+    LAND((byte) 0x7f, 0, 1, 2),
+    LASTORE((byte) 0x50, 0, 0, 3),
+    LCMP((byte) 0x94, 0, 1, 2),
+    LCONST_0((byte) 0x9, 0, 1, 0),
+    LCONST_1((byte) 0x0a, 0, 1, 0),
+    LDC((byte) 0x12, 1, 1, 0),
+    LDC_W((byte) 0x13, 2, 1, 0),
+    LDC2_W((byte) 0x14, 2, 1, 0),
+    LDIV((byte) 0x6d, 0, 1, 2),
+    LLOAD((byte) 0x16, 1, 1, 0),
+    LLOAD_0((byte) 0x1e, 0, 1, 0),
+    LLOAD_1((byte) 0x1f, 0, 1, 0),
+    LLOAD_2((byte) 0x20, 0, 1, 0),
+    LLOAD_3((byte) 0x21, 0, 1, 0),
+    LMUL((byte) 0x69, 0, 1, 2),
+    LNEG((byte) 0x75, 0, 1, 1),
+    LOOKUPSWITCH((byte) 0xab, -1, 0, 1),
+    LOR((byte) 0x81, 0, 1, 2),
+    LREM((byte) 0x71, 0, 1, 2),
+    LRETURN((byte) 0xad, 0, 0, -1),
+    LSHL((byte) 0x79, 0, 1, 2),
+    LSHR((byte) 0x7b, 0, 1, 2),
+    LSTORE((byte) 0x37, 1, 0, 1),
+    LSTORE_0((byte) 0x3f, 0, 0, 1),
+    LSTORE_1((byte) 0x40, 0, 0, 1),
+    LSTORE_2((byte) 0x41, 0, 0, 1),
+    LSTORE_3((byte) 0x42, 0, 0, 1),
+    LSUB((byte) 0x65, 0, 1, 2),
+    LUSHR((byte) 0x7d, 0, 1, 2),
+    LXOR((byte) 0x83, 0, 1, 2),
+    MONITORENTER((byte) 0xc2, 0, 0, 1),
+    MONITOREXIT((byte) 0xc3, 0, 0, 1),
+    MULTIANEWARRAY((byte) 0xc5, 3, 1, -2),
+    NEW((byte) 0xbb, 2, 1, 0),
+    NEWARRAY((byte) 0xbc, 1, 1, 1),
+    NOP((byte) 0x0, 0, 0, 0),
+    POP((byte) 0x57, 0, 0, 1),
+    POP2((byte) 0x58, 0, 0, 2),
+    PUTFIELD((byte) 0xb5, 2, 0, 2),
+    PUTSTATIC((byte) 0xb3, 2, 0, 1),
+    RET((byte) 0xa9, 1, 0, 0),
+    RETURN((byte) 0xb1, 0, 0, -1),
+    SALOAD((byte) 0x35, 0, 1, 2),
+    SASTORE((byte) 0x56, 0, 0, 3),
+    SIPUSH((byte) 0x11, 2, 1, 0),
+    SWAP((byte) 0x5f, 0, 2, 2),
+    TABLESWITCH((byte) 0xaa, -1, 0, 1),
+    WIDE((byte) 0xc4, 5, 0, 0);
 
-    private final byte opCode;
+    public final byte opCode;
+    public final int parameters;
+    public final int addOperandStack;
+    public final int removeOperandStack;
 
-    ASMInstruction(byte opCode) {
+    ASMInstruction(byte opCode, int parameters, int addOperandStack, int removeOperandStack) {
         this.opCode = opCode;
-    }
-
-    public byte getOpCode() {
-        return this.opCode;
+        this.parameters = parameters;
+        this.addOperandStack = addOperandStack;
+        this.removeOperandStack = removeOperandStack;
     }
 }
