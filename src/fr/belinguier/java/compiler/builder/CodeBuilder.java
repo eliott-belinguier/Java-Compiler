@@ -38,7 +38,7 @@ public class CodeBuilder {
         byteBuffer = ByteBuffer.allocate(allocationSize);
         for (Object obj : instructions) {
             if (obj instanceof ASMInstruction)
-                byteBuffer.put(((ASMInstruction) obj).getOpCode());
+                byteBuffer.put(((ASMInstruction) obj).opCode);
             else if (obj instanceof Double)
                 byteBuffer.putDouble((Double) obj);
             else if (obj instanceof Float)
