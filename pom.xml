@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>fr.belinguier</groupId>
+    <artifactId>java-compiler</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Java Compiler</name>
+    <description>Simple java compiler library.</description>
+
+    <developers>
+        <developer>
+            <id>eliott-belinguier</id>
+            <name>Eliott Belinguier</name>
+            <email>eliott@belinguier.fr</email>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>Eliott Belinguier</name>
+        <url>https://github.com/eliott-belinguier</url>
+    </organization>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/eliott-belinguier/Java-Compiler/issues</url>
+    </issueManagement>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <defaultGoal>clean install javadoc:javadoc</defaultGoal>
+        <sourceDirectory>src</sourceDirectory>
+        <finalName>${pom.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
