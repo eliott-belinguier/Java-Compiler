@@ -3,9 +3,8 @@ package fr.belinguier.java.compiler.constant;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestConstant {
 
@@ -39,7 +38,7 @@ public class TestConstant {
                 return null;
             }
         };
-        assertFalse(constant.equals(str));
+        assertNotEquals(constant, str);
     }
 
     @Test
@@ -56,7 +55,7 @@ public class TestConstant {
                 return null;
             }
         };
-        assertFalse(firstConstant.equals(secondConstant));
+        assertNotEquals(firstConstant, secondConstant);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class TestConstant {
                 return null;
             }
         };
-        assertTrue(firstConstant.equals(secondConstant));
+        assertEquals(firstConstant, secondConstant);
     }
 
 }
