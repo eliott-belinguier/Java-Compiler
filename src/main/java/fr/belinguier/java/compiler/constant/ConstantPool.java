@@ -159,7 +159,7 @@ public class ConstantPool implements Serializable, Iterable<Constant> {
 
     @Override
     public byte[] serialize() {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
         byte[] serializedConstant;
 
         byteBuffer.putShort((short) (this.constants.size() + offset + 1));

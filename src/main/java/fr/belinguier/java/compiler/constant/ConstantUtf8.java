@@ -58,7 +58,7 @@ public class ConstantUtf8 extends Constant {
 
     @Override
     public byte[] serialize(ConstantPool constantPool) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
 
         byteBuffer.put(getConstantType().getTag());
         byteBuffer.putShort((short) length());

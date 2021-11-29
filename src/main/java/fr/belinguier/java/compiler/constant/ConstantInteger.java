@@ -44,7 +44,7 @@ public class ConstantInteger extends Constant {
 
     @Override
     public byte[] serialize(ConstantPool constantPool) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
+        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
 
         byteBuffer.put((byte) getConstantType().getTag());
         byteBuffer.putInt(this.value);
