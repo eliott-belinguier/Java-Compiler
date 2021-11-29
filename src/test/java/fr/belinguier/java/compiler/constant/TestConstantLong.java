@@ -21,7 +21,7 @@ public class TestConstantLong {
     }
 
     @Test
-    public void testConstantLongWithNullConstantPool() {
+    public void testWithNullConstantPool() {
         final ConstantLong constant = new ConstantLong(8);
         final byte[] serializedConstant = new byte[] {
                 ConstantType.LONG.getTag(), 0, 0, 0, 0, 0, 0, 0, 8
