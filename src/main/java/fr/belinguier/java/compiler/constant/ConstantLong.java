@@ -44,11 +44,8 @@ public class ConstantLong extends Constant {
 
     @Override
     public byte[] serialize(ConstantPool constantPool) {
-        ByteBuffer byteBuffer;
+        ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
 
-        if (getConstantType() == null)
-            return null;
-        byteBuffer = ByteBuffer.allocate(serializationSize());
         byteBuffer.put(getConstantType().getTag());
         byteBuffer.putLong(this.value);
         return byteBuffer.array();
