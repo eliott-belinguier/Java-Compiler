@@ -57,9 +57,6 @@ public class TestConstantNameAndType {
     public void testConstantNullConstantPool() {
         final ConstantNameAndType constant = new ConstantNameAndType(new ConstantUtf8("Name"),
                 new ConstantUtf8("Descriptor"));
-        final byte[] serializedConstant = new byte[] {
-                ConstantType.NAME_AND_TYPE.getTag(), 0, 1, 0, 2
-        };
 
         assertEquals(constant.getConstantType(), ConstantType.NAME_AND_TYPE);
         assertEquals(constant.getName(), new ConstantUtf8("Name"));
