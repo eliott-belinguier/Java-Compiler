@@ -63,7 +63,7 @@ public class ConstantUtf8 extends Constant {
         if (getConstantType() == null)
             return null;
         byteBuffer = ByteBuffer.allocate(serializationSize());
-        byteBuffer.put((byte) getConstantType().getTag());
+        byteBuffer.put(getConstantType().getTag());
         byteBuffer.putShort((short) length());
         if (this.bytes != null)
             byteBuffer.put(this.bytes, 0, this.bytes.length);

@@ -49,7 +49,7 @@ public class ConstantDouble extends Constant {
         if (getConstantType() == null)
             return null;
         byteBuffer = ByteBuffer.allocate(serializationSize());
-        byteBuffer.put((byte) getConstantType().getTag());
+        byteBuffer.put(getConstantType().getTag());
         byteBuffer.putDouble(this.value);
         return byteBuffer.array();
     }

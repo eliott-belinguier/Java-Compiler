@@ -49,7 +49,7 @@ public class ConstantLong extends Constant {
         if (getConstantType() == null)
             return null;
         byteBuffer = ByteBuffer.allocate(serializationSize());
-        byteBuffer.put((byte) getConstantType().getTag());
+        byteBuffer.put(getConstantType().getTag());
         byteBuffer.putLong(this.value);
         return byteBuffer.array();
     }
