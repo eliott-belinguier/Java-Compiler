@@ -4,12 +4,12 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
- * This Constant class represents a class constant in the structure of the ClassFile.
+ * This Constant class represents a field reference constant in the structure of the ClassFile.
  * @author Eliott Belinguier
  * @since 1.0
  * @version 1.0
  * @see Constant
- * @see <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.2">ConstantClass in ClassFile's structure</a>
+ * @see <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.2">ConstantField in ClassFile's structure</a>
  */
 public class ConstantFieldRef extends Constant {
 
