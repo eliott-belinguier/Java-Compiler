@@ -32,6 +32,7 @@ public class ConstantDouble extends Constant {
     /**
      * Get the {@link Double} number that the constant represents.
      * @return The {@link Double} number.
+     * @since 1.0
      */
     public double getValue() {
         return this.value;

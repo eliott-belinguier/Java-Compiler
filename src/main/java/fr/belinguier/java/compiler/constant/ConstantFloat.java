@@ -32,6 +32,7 @@ public class ConstantFloat extends Constant {
     /**
      * Get the {@link Float} number that the constant represents.
      * @return The {@link Float} number.
+     * @since 1.0
      */
     public float getValue() {
         return this.value;

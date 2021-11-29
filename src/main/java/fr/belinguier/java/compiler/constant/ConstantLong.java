@@ -32,6 +32,7 @@ public class ConstantLong extends Constant {
     /**
      * Get the {@link Long} number that the constant represents.
      * @return The {@link Long} number.
+     * @since 1.0
      */
     public long getValue() {
         return this.value;

@@ -32,6 +32,7 @@ public class ConstantInteger extends Constant {
     /**
      * Get the {@link Integer} number that the constant represents.
      * @return The {@link Integer} number.
+     * @since 1.0
      */
     public int getValue() {
         return this.value;
