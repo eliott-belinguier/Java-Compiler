@@ -40,6 +40,15 @@ public class ConstantClass extends Constant {
     }
 
     /**
+     * Initializes a newly created Constant object to represent {@link Class}.
+     * @param clazz The {@link Class} to represent.
+     * @since 1.0
+     */
+    public ConstantClass(Class<?> clazz) {
+        this(clazz != null ? new ConstantUtf8(clazz.getName()) : null);
+    }
+
+    /**
      * Get the represented class's name, as a constant.
      * @return The class's name, as a constant.
      * @since 1.0
