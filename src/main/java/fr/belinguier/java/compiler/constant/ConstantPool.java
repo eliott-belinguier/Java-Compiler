@@ -48,6 +48,15 @@ public class ConstantPool implements Serializable, Iterable<Constant> {
     }
 
     /**
+     * Constructs a copy of a constant pool.
+     * @since 1.0
+     */
+    public ConstantPool(ConstantPool constantPool) {
+        this.constants = (constantPool != null) ? new LinkedHashSet<Constant>(constantPool.constants)
+                : new LinkedHashSet<Constant>();
+    }
+
+    /**
      * Returns the array of registered constants with no offset.
      * @return The array of registered constants.
      * @since 1.0
