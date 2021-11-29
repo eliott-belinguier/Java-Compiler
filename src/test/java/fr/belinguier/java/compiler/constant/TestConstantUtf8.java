@@ -9,7 +9,22 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 public class TestConstantUtf8 {
 
     @Test
-    public void testConstantUTF8Null() {
+    public void testConstant() {
+        final ConstantPool constantPool = new ConstantPool();
+        final ConstantUtf8 constant = new ConstantUtf8("MrCubee");
+        final byte[] serializedConstant = new byte[] {
+                ConstantType.UTF_8.getTag(), 0, 7, 'M', 'r', 'C', 'u', 'b', 'e', 'e'
+        };
+
+        assertEquals(constant.getConstantType(), ConstantType.UTF_8);
+        assertEquals(constant.length(), 7);
+        assertEquals(constant.getString(), "MrCubee");
+        assertEquals(constant.serializationSize(), 10);
+        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+    }
+
+    @Test
+    public void testConstantNull() {
         final ConstantPool constantPool = new ConstantPool();
         final ConstantUtf8 constant = new ConstantUtf8(null);
         final byte[] serializedConstant = new byte[] {
@@ -24,7 +39,7 @@ public class TestConstantUtf8 {
     }
 
     @Test
-    public void testConstantUTF8WithNullConstantPool() {
+    public void testWithNullConstantPool() {
         final ConstantUtf8 constant = new ConstantUtf8("MrCubee");
         final byte[] serializedConstant = new byte[] {
                 ConstantType.UTF_8.getTag(), 0, 7, 'M', 'r', 'C', 'u', 'b', 'e', 'e'
