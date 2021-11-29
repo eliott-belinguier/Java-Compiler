@@ -56,9 +56,13 @@ public class ConstantClass extends Constant {
 
     @Override
     public byte[] serialize(ConstantPool constantPool) {
-        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
-        final short nameIndex = constantPool.getOrRegister(this.className);
+        final ByteBuffer byteBuffer;
+        final short nameIndex;
 
+        if (constantPool == null)
+            return null;
+        byteBuffer = ByteBuffer.allocate(serializationSize());
+        nameIndex = constantPool.getOrRegister(this.className);
         byteBuffer.put(getConstantType().getTag());
         byteBuffer.putShort(nameIndex);
         return byteBuffer.array();

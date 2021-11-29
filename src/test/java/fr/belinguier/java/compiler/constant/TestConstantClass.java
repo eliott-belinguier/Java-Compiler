@@ -62,4 +62,17 @@ public class TestConstantClass {
         assertArrayEquals(constant.serialize(constantPool), serializedConstant);
     }
 
+    @Test
+    public void testConstantNullConstantPool() {
+        final ConstantClass constant = new ConstantClass(new ConstantUtf8("MrCubee"));
+        final byte[] serializedConstant = new byte[] {
+                ConstantType.CLASS.getTag(), 0, 1
+        };
+
+        assertEquals(constant.getConstantType(), ConstantType.CLASS);
+        assertEquals(constant.getClassName(), new ConstantUtf8("MrCubee"));
+        assertEquals(constant.serializationSize(), 3);
+        assertNull(constant.serialize(null));
+    }
+
 }
