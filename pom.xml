@@ -34,7 +34,6 @@
 
     <build>
         <defaultGoal>clean install javadoc:javadoc</defaultGoal>
-        <sourceDirectory>src</sourceDirectory>
         <finalName>${pom.artifactId}</finalName>
         <plugins>
             <plugin>
