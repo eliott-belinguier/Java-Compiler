@@ -10,6 +10,7 @@ package fr.belinguier.java;
  */
 public enum JavaVersion {
 
+    JAVA_1((short) 0),
     JAVA_1_1((short) 45),
     JAVA_1_2((short) 46),
     JAVA_1_3((short) 47),

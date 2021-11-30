@@ -1,6 +1,7 @@
 package fr.belinguier.java.compiler.constant;
 
-import java.nio.ByteBuffer;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -68,25 +69,12 @@ public class ConstantNameAndType extends Constant {
     }
 
     @Override
-    public int serializationSize() {
-        return super.serializationSize() + 4;
-    }
-
-    @Override
-    public byte[] serialize(ConstantPool constantPool) {
-        final ByteBuffer byteBuffer;
-        final short nameIndex;
-        final short descriptorIndex;
-
-        if (constantPool == null)
-            return null;
-        byteBuffer = ByteBuffer.allocate(serializationSize());
-        nameIndex = constantPool.getOrRegister(this.name);
-        descriptorIndex = constantPool.getOrRegister(this.descriptor);
-        byteBuffer.put((byte) getConstantType().getTag());
-        byteBuffer.putShort(nameIndex);
-        byteBuffer.putShort(descriptorIndex);
-        return byteBuffer.array();
+    public void serialize(final ConstantPool constantPool, final DataOutputStream out) throws IOException {
+        if (constantPool == null || out == null)
+            return;
+        super.serialize(constantPool, out);
+        out.writeShort(constantPool.getOrRegister(this.name));
+        out.writeShort(constantPool.getOrRegister(this.descriptor));
     }
 
     @Override

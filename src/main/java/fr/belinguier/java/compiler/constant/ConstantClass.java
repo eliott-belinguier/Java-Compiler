@@ -1,6 +1,7 @@
 package fr.belinguier.java.compiler.constant;
 
-import java.nio.ByteBuffer;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Objects;
  * @since 1.0
  * @version 1.0
  * @see Constant
- * @see <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.1">ConstantClass in ClassFile's structure</a>
+ * @see <a href="https://docs.oracle.com/javase/sperializationSize(this);ecs/jvms/se7/html/jvms-4.html#jvms-4.4.1">ConstantClass in ClassFile's structure</a>
  */
 public class ConstantClass extends Constant {
 
@@ -59,22 +60,11 @@ public class ConstantClass extends Constant {
     }
 
     @Override
-    public int serializationSize() {
-        return super.serializationSize() + 2;
-    }
-
-    @Override
-    public byte[] serialize(ConstantPool constantPool) {
-        final ByteBuffer byteBuffer;
-        final short nameIndex;
-
-        if (constantPool == null)
-            return null;
-        byteBuffer = ByteBuffer.allocate(serializationSize());
-        nameIndex = constantPool.getOrRegister(this.className);
-        byteBuffer.put(getConstantType().getTag());
-        byteBuffer.putShort(nameIndex);
-        return byteBuffer.array();
+    public void serialize(final ConstantPool constantPool, final DataOutputStream out) throws IOException {
+        if (constantPool == null || out == null)
+            return;
+        super.serialize(constantPool, out);
+        out.writeShort(constantPool.getOrRegister(this.className));
     }
     
     @Override

@@ -2,6 +2,9 @@ package fr.belinguier.java.compiler.constant;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestConstantClass {
@@ -9,95 +12,123 @@ public class TestConstantClass {
     @Test
     public void testConstantWithConstant() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass(new ConstantUtf8("MrCubee"));
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 1
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertEquals(constant.getClassName(), new ConstantUtf8("MrCubee"));
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantWithName() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass("MrCubee");
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 1
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertEquals(constant.getClassName(), new ConstantUtf8("MrCubee"));
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantWithClass() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass(TestConstantClass.class);
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 1
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertEquals(constant.getClassName(), new ConstantUtf8(TestConstantClass.class.getName()));
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantWithNullNameConstant() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass((ConstantUtf8) null);
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 0
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertNull(constant.getClassName());
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantWithNullNameString() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass((String) null);
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 1
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertEquals(constant.getClassName(), new ConstantUtf8(null));
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantWithNullClass() {
         final ConstantPool constantPool = new ConstantPool();
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
         final ConstantClass constant = new ConstantClass((Class<?>) null);
-        final byte[] serializedConstant = new byte[] {
+        final byte[] serializedConstantModel = new byte[] {
                 ConstantType.CLASS.getTag(), 0, 0
         };
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(constantPool, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertNull(constant.getClassName());
-        assertEquals(constant.serializationSize(), 3);
-        assertArrayEquals(constant.serialize(constantPool), serializedConstant);
+        assertArrayEquals(serializedConstant, serializedConstantModel);
     }
 
     @Test
     public void testConstantNullConstantPool() {
         final ConstantClass constant = new ConstantClass(new ConstantUtf8("MrCubee"));
+        final ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+        final byte[] serializedConstant;
+
+        assertDoesNotThrow(() -> constant.serialize(null, new DataOutputStream(arrayOutputStream)));
+        serializedConstant = arrayOutputStream.toByteArray();
 
         assertEquals(constant.getConstantType(), ConstantType.CLASS);
         assertEquals(constant.getClassName(), new ConstantUtf8("MrCubee"));
-        assertEquals(constant.serializationSize(), 3);
-        assertNull(constant.serialize(null));
+        assertArrayEquals(serializedConstant, new byte[0]);
     }
 
 }

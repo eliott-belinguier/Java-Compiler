@@ -1,6 +1,7 @@
 package fr.belinguier.java.compiler.constant;
 
-import java.nio.ByteBuffer;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -52,19 +53,15 @@ public class ConstantUtf8 extends Constant {
     }
 
     @Override
-    public int serializationSize() {
-        return super.serializationSize() + 2 + length();
-    }
+    public void serialize(final ConstantPool constantPool, final DataOutputStream out) throws IOException {
+        final int byteArrayLength = length();
 
-    @Override
-    public byte[] serialize(ConstantPool constantPool) {
-        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
-
-        byteBuffer.put(getConstantType().getTag());
-        byteBuffer.putShort((short) length());
+        if (out == null)
+            return;
+        super.serialize(constantPool, out);
+        out.writeShort((short) byteArrayLength);
         if (this.bytes != null)
-            byteBuffer.put(this.bytes, 0, this.bytes.length);
-        return byteBuffer.array();
+            out.write(this.bytes, 0, byteArrayLength);
     }
 
     @Override

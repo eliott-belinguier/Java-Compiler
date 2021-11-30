@@ -2,10 +2,13 @@ package fr.belinguier.java.compiler.constant;
 
 import fr.belinguier.java.compiler.Serializable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * This ConstantPool class represents the pool of constants in ClassFile structure.<p>
@@ -158,26 +161,28 @@ public class ConstantPool implements Serializable, Iterable<Constant> {
     }
 
     @Override
-    public int serializationSize() {
-        int total = 2;
+    public void serialize(final DataOutputStream out) throws IOException {
+        final ByteArrayOutputStream arrayOutputStream;
+        final DataOutputStream constantOut;
+        final LinkedList<Constant> doneList;
+        final LinkedList<Constant> todoList;
 
-        for (Constant constant : this.constants)
-            total += constant.serializationSize();
-        return total;
-    }
-
-    @Override
-    public byte[] serialize() {
-        final ByteBuffer byteBuffer = ByteBuffer.allocate(serializationSize());
-        byte[] serializedConstant;
-
-        byteBuffer.putShort((short) (this.constants.size() + offset + 1));
-        for (Constant constant : this.constants) {
-            serializedConstant = constant.serialize(this);
-            if (serializedConstant != null)
-                byteBuffer.put(serializedConstant);
-        }
-        return byteBuffer.array();
+        if (out == null)
+            return;
+        arrayOutputStream = new ByteArrayOutputStream();
+        constantOut = new DataOutputStream(arrayOutputStream);
+        doneList = new LinkedList<Constant>();
+        todoList = new LinkedList<Constant>(this.constants);
+        do {
+            for (Constant constant : todoList)
+                constant.serialize(this, constantOut);
+            doneList.addAll(todoList);
+            todoList.clear();
+            todoList.addAll(this.constants);
+            todoList.removeAll(doneList);
+        } while (todoList.size() > 0);
+        out.writeShort((short) (this.constants.size() + offset + 1));
+        out.write(arrayOutputStream.toByteArray());
     }
 
 }

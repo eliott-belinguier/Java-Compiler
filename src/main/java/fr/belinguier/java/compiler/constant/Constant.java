@@ -1,5 +1,7 @@
 package fr.belinguier.java.compiler.constant;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -45,8 +47,10 @@ public abstract class Constant implements ConstantSerializable {
     }
 
     @Override
-    public int serializationSize() {
-        return 1;
+    public void serialize(final ConstantPool constantPool, final DataOutputStream out) throws IOException {
+        if (out == null)
+            return;
+        out.writeByte(constantType.getTag());
     }
 
     @Override
